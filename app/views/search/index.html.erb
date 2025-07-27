@@ -1,0 +1,82 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1>Search Books</h1>
+      
+      <!-- Search Form -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <%= form_with url: search_path, method: :get, local: true do |form| %>
+            <div class="row">
+              <div class="col-md-8">
+                <%= form.text_field :q, 
+                    value: @query, 
+                    placeholder: "Search by title, author, subject, or description...", 
+                    class: "form-control" %>
+              </div>
+              <div class="col-md-4">
+                <%= form.submit "Search", class: "btn btn-primary w-100" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Search Results -->
+      <% if @query.present? %>
+        <div class="row">
+          <div class="col-12">
+            <h3>Search Results for "<%= @query %>"</h3>
+            <p class="text-muted">Found <%= @books.count %> book(s)</p>
+          </div>
+        </div>
+      <% elsif @books.any? %>
+        <div class="row">
+          <div class="col-12">
+            <h3>Recent Books</h3>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="row">
+        <% @books.each do |book| %>
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title"><%= link_to book.title, book_path(book) %></h5>
+                <p class="card-text">
+                  <strong>Author:</strong> <%= link_to book.author.name, author_path(book.author) %><br>
+                  <strong>Published:</strong> <%= book.publish_date&.strftime("%Y") %><br>
+                  <strong>ISBN:</strong> <%= book.isbn %>
+                </p>
+                
+                <% if book.subjects.any? %>
+                  <div class="mb-2">
+                    <strong>Subjects:</strong>
+                    <% book.subjects.each do |subject| %>
+                      <%= link_to subject.name, subject_path(subject), class: "badge bg-secondary text-decoration-none me-1" %>
+                    <% end %>
+                  </div>
+                <% end %>
+                
+                <p class="card-text"><%= truncate(book.description, length: 100) %></p>
+              </div>
+              <div class="card-footer">
+                <%= link_to "View Details", book_path(book), class: "btn btn-primary" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <% if @query.present? && @books.empty? %>
+        <div class="row">
+          <div class="col-12 text-center">
+            <p class="text-muted">No books found matching your search criteria.</p>
+            <p>Try searching for different keywords or browse our <%= link_to "complete collection", books_path %>.</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

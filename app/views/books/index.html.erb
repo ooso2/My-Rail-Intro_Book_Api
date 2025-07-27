@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-12">
+    <h1>Books Collection</h1>
+    
+    <% if params[:author_id].present? %>
+      <div class="alert alert-info">
+        Showing books by: <%= Author.find(params[:author_id]).name %>
+        <%= link_to "Show all books", books_path, class: "btn btn-sm btn-outline-primary" %>
+      </div>
+    <% end %>
+    
+    <% if params[:subject_id].present? %>
+      <div class="alert alert-info">
+        Showing books in: <%= Subject.find(params[:subject_id]).name %>
+        <%= link_to "Show all books", books_path, class: "btn btn-sm btn-outline-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <% @books.each do |book| %>
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title"><%= link_to book.title, book_path(book) %></h5>
+          <p class="card-text">
+            <strong>Author:</strong> <%= link_to book.author.name, author_path(book.author) %><br>
+            <strong>Published:</strong> <%= book.publish_date&.year %><br>
+            <strong>ISBN:</strong> <%= book.isbn %>
+          </p>
+          
+          <% if book.subjects.any? %>
+            <div class="mb-2">
+              <strong>Subjects:</strong>
+              <% book.subjects.each do |subject| %>
+                <%= link_to subject.name, subject_path(subject), class: "badge bg-secondary text-decoration-none me-1" %>
+              <% end %>
+            </div>
+          <% end %>
+          
+          <p class="card-text"><%= truncate(book.description, length: 100) %></p>
+        </div>
+        <div class="card-footer">
+          <%= link_to "View Details", book_path(book), class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% if @books.empty? %>
+  <div class="row">
+    <div class="col-12 text-center">
+      <p class="text-muted">No books found.</p>
+      <%= link_to "Add the first book", new_book_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><%= link_to "Authors", authors_path %></li>
+          <li class="breadcrumb-item"><%= link_to @author.name, author_path(@author) %></li>
+          <li class="breadcrumb-item active" aria-current="page">Edit</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <h1>Edit Author</h1>
+      
+      <div class="card">
+        <div class="card-body">
+          <%= form_with model: @author, local: true do |form| %>
+            <% if @author.errors.any? %>
+              <div class="alert alert-danger">
+                <h4><%= pluralize(@author.errors.count, "error") %> prohibited this author from being saved:</h4>
+                <ul>
+                  <% @author.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <%= form.label :name, class: "form-label" %>
+              <%= form.text_field :name, class: "form-control" %>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :nationality, class: "form-label" %>
+              <%= form.text_field :nationality, class: "form-control" %>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :birth_date, class: "form-label" %>
+              <%= form.date_field :birth_date, class: "form-control" %>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :biography, class: "form-label" %>
+              <%= form.text_area :biography, rows: 6, class: "form-control" %>
+            </div>
+
+            <div class="d-flex gap-2">
+              <%= form.submit "Update Author", class: "btn btn-primary" %>
+              <%= link_to "Cancel", author_path(@author), class: "btn btn-secondary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Quick Actions</h6>
+        </div>
+        <div class="card-body">
+          <%= link_to "View Author", author_path(@author), class: "btn btn-outline-primary btn-sm mb-2 w-100" %>
+          <%= link_to "Add Book", new_book_path, class: "btn btn-outline-success btn-sm w-100" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,85 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1>About Our Book Collection</h1>
+      
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Welcome to Our Book Management System</h5>
+          <p class="card-text">
+            This is a comprehensive book management system that allows you to:
+          </p>
+          <ul>
+            <li>Browse and search through our collection of books</li>
+            <li>View detailed information about authors and their works</li>
+            <li>Explore books by subject categories</li>
+            <li>Read and write reviews for books</li>
+            <li>Add new books, authors, and subjects to the collection</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h6 class="mb-0">Features</h6>
+            </div>
+            <div class="card-body">
+              <ul class="list-unstyled">
+                <li>✓ Comprehensive book catalog</li>
+                <li>✓ Author profiles and biographies</li>
+                <li>✓ Subject-based categorization</li>
+                <li>✓ User reviews and ratings</li>
+                <li>✓ Advanced search functionality</li>
+                <li>✓ Responsive design</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h6 class="mb-0">Quick Links</h6>
+            </div>
+            <div class="card-body">
+              <div class="d-grid gap-2">
+                <%= link_to "Browse All Books", books_path, class: "btn btn-primary" %>
+                <%= link_to "View Authors", authors_path, class: "btn btn-secondary" %>
+                <%= link_to "Browse Subjects", subjects_path, class: "btn btn-info" %>
+                <%= link_to "Search Books", search_path, class: "btn btn-success" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Statistics</h6>
+        </div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col-md-3">
+              <h4><%= Book.count %></h4>
+              <p class="text-muted">Books</p>
+            </div>
+            <div class="col-md-3">
+              <h4><%= Author.count %></h4>
+              <p class="text-muted">Authors</p>
+            </div>
+            <div class="col-md-3">
+              <h4><%= Subject.count %></h4>
+              <p class="text-muted">Subjects</p>
+            </div>
+            <div class="col-md-3">
+              <h4><%= Review.count %></h4>
+              <p class="text-muted">Reviews</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

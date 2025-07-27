@@ -1,0 +1,98 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><%= link_to "Books", books_path %></li>
+          <li class="breadcrumb-item active" aria-current="page"><%= @book.title %></li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <h1><%= @book.title %></h1>
+      
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Author:</strong> <%= link_to @book.author.name, author_path(@book.author) %></p>
+              <p><strong>Published:</strong> <%= @book.publish_date&.strftime("%B %Y") %></p>
+              <p><strong>ISBN:</strong> <%= @book.isbn %></p>
+            </div>
+            <div class="col-md-6">
+              <% if @book.subjects.any? %>
+                <p><strong>Subjects:</strong></p>
+                <% @book.subjects.each do |subject| %>
+                  <%= link_to subject.name, subject_path(subject), class: "badge bg-secondary text-decoration-none me-1" %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+          
+          <% if @book.description.present? %>
+            <hr>
+            <h5>Description</h5>
+            <p><%= @book.description %></p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Reviews Section -->
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Reviews</h5>
+          <%= link_to "Add Review", new_book_review_path(@book), class: "btn btn-primary btn-sm" %>
+        </div>
+        <div class="card-body">
+          <% if @reviews.any? %>
+            <% @reviews.each do |review| %>
+              <div class="border-bottom pb-3 mb-3">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <% review.rating.times do %>
+                      <span class="text-warning">★</span>
+                    <% end %>
+                    <% (5 - review.rating).times do %>
+                      <span class="text-muted">☆</span>
+                    <% end %>
+                  </div>
+                  <small class="text-muted">
+                    <%= review.reviewer_name %> • <%= review.review_date&.strftime("%B %d, %Y") %>
+                  </small>
+                </div>
+                <p class="mt-2"><%= review.review_text %></p>
+                <div class="btn-group btn-group-sm">
+                  <%= link_to "Edit", edit_book_review_path(@book, review), class: "btn btn-outline-secondary" %>
+                  <%= link_to "Delete", book_review_path(@book, review), 
+                      method: :delete, 
+                      data: { confirm: "Are you sure?" }, 
+                      class: "btn btn-outline-danger" %>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="text-muted">No reviews yet. Be the first to review this book!</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Actions</h6>
+        </div>
+        <div class="card-body">
+          <%= link_to "Edit Book", edit_book_path(@book), class: "btn btn-warning btn-sm mb-2 w-100" %>
+          <%= link_to "Delete Book", book_path(@book), 
+              method: :delete, 
+              data: { confirm: "Are you sure? This will also delete all reviews." }, 
+              class: "btn btn-danger btn-sm w-100" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

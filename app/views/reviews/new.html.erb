@@ -1,0 +1,96 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><%= link_to "Books", books_path %></li>
+          <li class="breadcrumb-item"><%= link_to @book.title, book_path(@book) %></li>
+          <li class="breadcrumb-item active" aria-current="page">Add Review</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <h1>Add Review for "<%= @book.title %>"</h1>
+      
+      <div class="card mb-4">
+        <div class="card-body">
+          <h6 class="card-title">Book Details</h6>
+          <p class="card-text">
+            <strong>Author:</strong> <%= @book.author.name %><br>
+            <strong>Published:</strong> <%= @book.publish_date&.strftime("%Y") %><br>
+            <strong>ISBN:</strong> <%= @book.isbn %>
+          </p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-body">
+          <%= form_with model: [@book, @review], local: true do |form| %>
+            <% if @review.errors.any? %>
+              <div class="alert alert-danger">
+                <h4><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h4>
+                <ul>
+                  <% @review.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <%= form.label :rating, class: "form-label" %>
+              <div class="rating-input">
+                <% 5.downto(1) do |rating| %>
+                  <div class="form-check form-check-inline">
+                    <%= form.radio_button :rating, rating, class: "form-check-input" %>
+                    <%= form.label "rating_#{rating}", "#{rating} #{rating == 1 ? 'Star' : 'Stars'}", class: "form-check-label" %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :reviewer_name, class: "form-label" %>
+              <%= form.text_field :reviewer_name, class: "form-control" %>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :review_text, "Review", class: "form-label" %>
+              <%= form.text_area :review_text, rows: 6, class: "form-control", 
+                  placeholder: "Share your thoughts about this book..." %>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :review_date, class: "form-label" %>
+              <%= form.date_field :review_date, value: Date.today, class: "form-control" %>
+            </div>
+
+            <div class="d-flex gap-2">
+              <%= form.submit "Submit Review", class: "btn btn-primary" %>
+              <%= link_to "Cancel", book_path(@book), class: "btn btn-secondary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Review Guidelines</h6>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled">
+            <li>• Rating is required (1-5 stars)</li>
+            <li>• Review text must be at least 10 characters</li>
+            <li>• Be respectful and constructive</li>
+            <li>• Share your honest opinion</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

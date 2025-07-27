@@ -1,0 +1,94 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><%= link_to "Authors", authors_path %></li>
+          <li class="breadcrumb-item active" aria-current="page"><%= @author.name %></li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <h1><%= @author.name %></h1>
+      
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <% if @author.nationality.present? %>
+                <p><strong>Nationality:</strong> <%= @author.nationality %></p>
+              <% end %>
+              <% if @author.birth_date.present? %>
+                <p><strong>Birth Date:</strong> <%= @author.birth_date.strftime("%B %d, %Y") %></p>
+              <% end %>
+              <p><strong>Total Books:</strong> <%= @author.books.count %></p>
+            </div>
+          </div>
+          
+          <% if @author.biography.present? %>
+            <hr>
+            <h5>Biography</h5>
+            <p><%= @author.biography %></p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Books Section -->
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Books by <%= @author.name %></h5>
+          <%= link_to "Add New Book", new_book_path, class: "btn btn-primary btn-sm" %>
+        </div>
+        <div class="card-body">
+          <% if @books.any? %>
+            <div class="row">
+              <% @books.each do |book| %>
+                <div class="col-md-6 mb-3">
+                  <div class="card">
+                    <div class="card-body">
+                      <h6 class="card-title"><%= link_to book.title, book_path(book) %></h6>
+                      <p class="card-text">
+                        <small class="text-muted">
+                          Published: <%= book.publish_date&.strftime("%Y") %><br>
+                          ISBN: <%= book.isbn %>
+                        </small>
+                      </p>
+                      <% if book.subjects.any? %>
+                        <div class="mb-2">
+                          <% book.subjects.each do |subject| %>
+                            <%= link_to subject.name, subject_path(subject), class: "badge bg-secondary text-decoration-none me-1" %>
+                          <% end %>
+                        </div>
+                      <% end %>
+                      <p class="card-text"><%= truncate(book.description, length: 80) %></p>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted">No books found for this author.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Actions</h6>
+        </div>
+        <div class="card-body">
+          <%= link_to "Edit Author", edit_author_path(@author), class: "btn btn-warning btn-sm mb-2 w-100" %>
+          <%= link_to "Delete Author", author_path(@author), 
+              method: :delete, 
+              data: { confirm: "Are you sure? This will also delete all books by this author." }, 
+              class: "btn btn-danger btn-sm w-100" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

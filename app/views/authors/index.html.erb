@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Authors</h1>
+        <%= link_to "Add New Author", new_author_path, class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <% @authors.each do |author| %>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to author.name, author_path(author) %></h5>
+            <p class="card-text">
+              <% if author.nationality.present? %>
+                <strong>Nationality:</strong> <%= author.nationality %><br>
+              <% end %>
+              <% if author.birth_date.present? %>
+                <strong>Birth Date:</strong> <%= author.birth_date.strftime("%B %d, %Y") %><br>
+              <% end %>
+              <strong>Books:</strong> <%= author.books.count %>
+            </p>
+            
+            <% if author.biography.present? %>
+              <p class="card-text"><%= truncate(author.biography, length: 100) %></p>
+            <% end %>
+          </div>
+          <div class="card-footer">
+            <%= link_to "View Details", author_path(author), class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @authors.empty? %>
+    <div class="row">
+      <div class="col-12 text-center">
+        <p class="text-muted">No authors found.</p>
+        <%= link_to "Add the first author", new_author_path, class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>
