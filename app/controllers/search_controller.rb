@@ -4,9 +4,10 @@ class SearchController < ApplicationController
     
     if @query.present?
       @books = Book.includes(:author, :subjects)
-                   .where("books.title ILIKE ? OR books.description ILIKE ?", "%#{@query}%", "%#{@query}%")
-                    (Book.joins(:author).where("authors.name ILIKE ?", "%#{@query}%"))
-                   .or(Book.joins(:subjects).where("subjects.name ILIKE ?", "%#{@query}%"))
+                   .where("books.title ILIKE ? OR books.description ILIKE ? OR authors.name ILIKE ? OR subjects.name ILIKE ?", 
+                          "%#{@query}%", "%#{@query}%", "%#{@query}%", "%#{@query}%")
+                   .joins(:author)
+                   .left_joins(:subjects)
                    .distinct
     else
       @books = Book.includes(:author, :subjects).limit(10)
